@@ -4,7 +4,7 @@
 # @!attribute [rw] logging
 #   @return [Bool] If false, does not write messages.
 class ProtonBot::Log
-  attr_accessor :levels, :logging
+  attr_accessor :levels, :logging, :log_info
 
   def initialize
     @pastel = Pastel.new
@@ -17,6 +17,7 @@ class ProtonBot::Log
     @levels = DEFAULT_SCHEME
 
     @logging = true
+    @log_info = false
 
     @stop = false
 
@@ -35,9 +36,11 @@ class ProtonBot::Log
   # @param msg [String]
   # @param nam [String] Name
   def info(msg, nam = 'log')
-    dat = gsub(msg.to_s, :info, nam)
-    @queue << dat
-    @pastel.strip(dat)
+    if @log_info
+      dat = gsub(msg.to_s, :info, nam)
+      @queue << dat
+      @pastel.strip(dat)
+    end
   end
 
   # @param msg [String]
