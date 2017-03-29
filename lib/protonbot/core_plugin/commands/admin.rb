@@ -7,7 +7,7 @@ cmd(cmd: 'key') do |dat|
     if dat[:split][0] == @key && !@key.nil?
       dat.reply "#{dat[:nick]}: given key is valid! You are an owner now!"
       addperm(dat[:plug], dat[:host], 'owner')
-    elsif dat[:split][0] == dat[:plug].conf[:uniq_key] && dat[:plug].conf[:uniq_key]
+    elsif dat[:split][0] == dat[:plug].conf['uniq_key'] && dat[:plug].conf['uniq_key']
       dat.reply "#{dat[:nick]}: given key is valid! You are an owner now!"
       addperm(dat[:plug], dat[:host], 'owner')
     else
