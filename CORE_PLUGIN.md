@@ -1,5 +1,3 @@
-Finish this, write other stuff, allow requesting multiple permissions, fix YARD, and after - publish gem.
-
 # Core Plugin
 Core plugin implements features which are essential for bot to exist: hooks (including ping-response), command engine, permission system, help system etc.
 
