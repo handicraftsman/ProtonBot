@@ -1,0 +1,7 @@
+#!/usr/bin/ruby
+if ARGV[0]
+  `openssl req -x509 -new -newkey rsa:4096 -sha256 -days 1000 -nodes -out #{ARGV[0]}.crt -keyout #{ARGV[0]}.key`
+else
+  puts 'No filename provided!'
+  puts "Usage: protonbot-cert <filename>"
+end

@@ -1,0 +1,6 @@
+run 'commands/admin'
+run 'commands/basic'
+run 'commands/cross'
+run 'commands/joinpart'
+run 'commands/help'
+run 'commands/perms'
