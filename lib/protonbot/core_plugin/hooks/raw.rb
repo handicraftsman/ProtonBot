@@ -1,7 +1,7 @@
 hook(type: :raw) do |dat|
   if    m = /^PING :(.+)/.match(dat[:raw_data])
     emit(dat.merge(type: :ping, server: m[1]))
-  elsif m = /^:.+ (\d\d\d) .+? (.+)/.match(dat[:raw_data])
+  elsif m = /^:.+? (\d\d\d) .+? (.+)/.match(dat[:raw_data])
     emit(dat.merge(type: :code, code: m[1], extra: m[2]))
   elsif m = /^:(.+?)!(.+?)@(.+?) PRIVMSG (.+?) :(.+)/.match(dat[:raw_data])
     rto =
@@ -28,5 +28,14 @@ hook(type: :raw) do |dat|
     emit(dat.merge(type: :unick, nick: m[1], user: m[2], host: m[3], to: m[4]))
   elsif m = /^:(.+?)!(.+?)@(.+?) KICK (.+?) (.+?) :.*/.match(dat[:raw_data])
     emit(dat.merge(type: :ukick, nick: m[1], user: m[2], host: m[3], channel: m[4], target: m[5]))
+  elsif m = /^:.+? CAP \* ACK :(.+)/.match(dat[:raw_data])
+    caps = m[1].split(' ')
+    caps.each do |c|
+      dat[:"cap_#{c}"] = true
+      dat[:type] = :cap_ack
+      emit(dat)
+    end
+  elsif m = /^AUTHENTICATE +/.match(dat[:raw_data])
+    emit(dat.merge(type: :auth_ok))
   end
 end

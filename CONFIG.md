@@ -20,7 +20,9 @@ Full-fledged config-hash looks like that:
       'autojoin' => ['#protonbot'],
       'ssl' => true, # This is how you can use SSL
       'ssl_crt' => './server2.crt',
-      'ssl_key' => './server2.key'
+      'ssl_key' => './server2.key',
+      'sasl' => true, # This is how you can use SASL authentication. You also MUST provide `pass` variable
+      'sasl_user' => 'your_SASL_username' # For example, name of NickServ account
     }
   }
 }

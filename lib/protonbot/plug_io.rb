@@ -46,7 +46,8 @@ class ProtonBot::Plug
 
   # Sends credentials to server (PASS, NICK, USER).
   def introduce
-    write_("PASS #{@conf['pass']}") if @conf['pass']
+    write_("PASS #{@conf['pass']}") if @conf['pass'] and !@use_sasl
+    write_("CAP REQ :sasl") if @use_sasl
     write_("NICK #{@conf['nick']}")
     write_("USER #{@conf['user']} 0 * :#{@conf['rnam']}")
   end

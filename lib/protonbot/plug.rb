@@ -34,14 +34,14 @@
 #     and processes messages from server.
 # @!attribute [r] user
 #   @return [String] Plug's username.
-# @!attribute [r] nick
+# @!attribute [rw] nick
 #   @return [String] Plug's nickname.
 # @!attribute [r] rnam
 #   @return [String] Plug's realname.
 class ProtonBot::Plug
   attr_reader :bot, :db, :sock, :rsock, :name, :conf, :rloop, :wloop, :log, :queue, :chans, :users,
-              :event_locks, :user, :nick, :rnam, :is_ssl
-  attr_accessor :running
+              :event_locks, :user, :rnam, :is_ssl
+  attr_accessor :running, :nick, :use_sasl
 
   # @param bot [Bot]
   # @param name [String]
@@ -61,6 +61,11 @@ class ProtonBot::Plug
     @chans       = {}
     @users       = {}
     @event_locks = []
+    if @conf['sasl'] and @conf['sasl_user'] and @conf['pass']
+      @use_sasl = true
+    else
+      @use_sasl = false
+    end
   end
 
   # Connects to server, introduces and starts reader and writer threads.

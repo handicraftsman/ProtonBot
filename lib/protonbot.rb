@@ -2,6 +2,8 @@ require 'English'
 
 require 'date'
 
+require 'base64'
+
 require 'pastel'
 require 'tty'
 require 'irb'
