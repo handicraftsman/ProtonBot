@@ -106,6 +106,7 @@ class ProtonBot::Plug
   # @return [Plug] self
   def log_err(e)
     @log.error('Error!')
+    @log.error("> Inspect: #{e.inspect}")
     @log.error("> Message: #{e.message}")
     @log.error('> Backtrace:')
     e.backtrace.each do |i|

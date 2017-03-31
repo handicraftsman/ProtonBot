@@ -10,8 +10,10 @@ hook(type: :raw) do |dat|
       else
         m[1]
       end
-    emitt(dat.merge(type: :privmsg, nick: m[1], user: m[2], host: m[3],
-                    target: m[4], message: m[5], reply_to: rto))
+    out = dat.merge(type: :privmsg, nick: m[1], user: m[2], 
+      host: m[3], target: m[4], message: m[5], reply_to: rto)
+    privmsg_patch(out)
+    emitt(out)
   elsif m = /^:(.+?)!(.+?)@(.+?) NOTICE (.+?) :(.+)/.match(dat[:raw_data])
     emitt(dat.merge(type: :notice, nick: m[1], user: m[2], host: m[3],
                     target: m[4], message: m[5]))

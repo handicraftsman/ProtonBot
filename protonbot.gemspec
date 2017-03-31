@@ -6,7 +6,7 @@ require 'protonbot/version'
 Gem::Specification.new do |spec|
   spec.name          = 'protonbot'
   spec.version       = ProtonBot::VERSION
-  spec.authors       = ['Nickolay']
+  spec.authors       = ['Nickolay Ilyushin']
   spec.email         = ['nickolay02@inbox.ru']
 
   spec.summary       = 'An IRC bot library'

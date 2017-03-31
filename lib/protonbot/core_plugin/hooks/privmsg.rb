@@ -24,7 +24,7 @@ hook(type: :privmsg) do |dat|
     s = dat[:message].split(' ')
     dat[:cmd] = s[0]
     (dat[:split] = s[1, s.length - 1]) || []
-    emit(privmsg_patch(dat))
+    emit(dat)
   end
 
   # Command-checker
