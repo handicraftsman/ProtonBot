@@ -77,6 +77,7 @@ class ProtonBot::Bot
   # @return [Bot] self
   def gem(gemname)
     if Gem.loaded_specs[gemname]
+      require gemname.gsub(/-/, '/')
       path = "#{Gem.loaded_specs[gemname].lib_dirs_glob.split(':')[0]}/" \
         "#{gemname.gsub(/-/, '/')}/plugin.rb"
       if File.exist? path
