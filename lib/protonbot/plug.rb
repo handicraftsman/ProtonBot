@@ -98,8 +98,6 @@ class ProtonBot::Plug
 
     introduce
 
-    @rloop.join
-    @wloop.join
     self
   end
 
@@ -119,5 +117,18 @@ class ProtonBot::Plug
   # @return [String] out
   def inspect
     %(<#ProtonBot::Plug:#{object_id.to_s(16)} @name=#{name} @bot=#{bot}>)
+  end
+
+  # @!api private
+  def thrjoin
+    until @rloop && @rloop.status == 'run'
+      sleep(0.1)
+    end
+    until @wloop && @wloop.status == 'run'
+      sleep(0.1)
+    end
+    @bot.plugthrs[@name].join
+    @rloop.join
+    @wloop.join
   end
 end

@@ -26,14 +26,16 @@ class ProtonBot::Bot
     @conf['servers'].each do |k_, v_|
       k = k_.clone
       v = v_.clone
-      @plugthrs[k] = Thread.new do
-        @dbs[k] = Heliodor::DB.new("dbs/#{k}.db", true) unless k.nil?
-        @plugs[k] = ProtonBot::Plug.new(self, k.clone, v.clone)
-        begin
-          @plugs[k].connect! if v['enabled'] || v['enabled'].nil?
-        rescue => e
-          @plugs[k].log_err(e)
+      @dbs[k] = Heliodor::DB.new("dbs/#{k}.db", true) unless k.nil?
+      @plugs[k] = ProtonBot::Plug.new(self, k.clone, v.clone)
+      begin
+        if v['enabled'] || v['enabled'].nil?
+          Thread.new do
+            @plugs[k].connect!
+          end
         end
+      rescue => e
+        @plugs[k].log_err(e)
       end
     end
 
@@ -47,8 +49,8 @@ class ProtonBot::Bot
       exit
     end
 
-    @plugthrs.each do |_k, v|
-      v.join
+    @plugs.each do |_, p|
+      p.thrjoin
     end
 
     @_log.stop
