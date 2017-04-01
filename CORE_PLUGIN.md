@@ -66,6 +66,11 @@ Default permission hash:
 }
 ```
 
+### Cooldowns
+These are added to prevent large amount of spam and available with different modes - `:global` (whole server), `:target_local`, `:user_local`, `:user_and_target` (default).
+
+Method is: `ProtonBot::Hook#cooldown!(seconds, mode = :user_and_target, verbose = true)`
+
 ### Help
 Core plugin implements help system. To add help for new command, just use `core.help_add(group_name, command_name, syntax, description)`:
 
