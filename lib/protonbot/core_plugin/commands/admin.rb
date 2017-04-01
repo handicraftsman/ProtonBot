@@ -98,6 +98,7 @@ end.perm!('nctcp')
 core.help_add('admin', 'flushq', 'flushq', 'Flushes queue')
 cmd(cmd: 'flushq') do |dat|
   dat[:plug].queue.clear
+  dat.nreply 'Write queue is empty now!'
 end.perm!('flushq')
 
 core.help_add('owner', 'r', 'r', 'Reloads all plugins')

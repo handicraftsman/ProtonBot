@@ -16,7 +16,7 @@ hook(type: :command, cmd: 'part') do |dat|
   if dat[:split].empty?
     dat[:plug].part(dat[:target], '')
   else
-    (reason = dat[:split][1]) || ''
+    reason = dat[:split][1,dat[:split].length-1].join(' ') || ''
     chans = dat[:split][0].split(',')
     chans.each do |chan|
       dat[:plug].part(chan, reason)

@@ -44,6 +44,7 @@ end
     notice
     nctcp
     flushq
+    nocooldown
   ),
   'cross' => %w(
     crossuser
@@ -80,6 +81,10 @@ fun :getperms do |plug, host|
   else
     dat[0].to_h['perms']
   end
+end
+
+fun :getpermsr do |plug, host|
+  process_perms(getperms!(plug, host))
 end
 
 fun :hasperm? do |plug, host, perm|
