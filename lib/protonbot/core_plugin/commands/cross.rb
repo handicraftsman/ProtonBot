@@ -1,5 +1,5 @@
 core.help_add('cross', 'as', 'as <nickname> {message}', 'Processes given message as given user')
-cmd(cmd: 'as', perm_crossuser: true) do |dat|
+cmd(cmd: 'as') do |dat|
   nick = dat[:split][0]
   if dat[:plug].users[nick]
     user = dat[:plug].getuser(nick)
@@ -10,10 +10,10 @@ cmd(cmd: 'as', perm_crossuser: true) do |dat|
   else
     dat.nreply 'No such user!'
   end
-end
+end.perm!('crossuser')
 
 core.help_add('cross', 'at', 'at <channel> {message}', 'Processes given message at given channel')
-cmd(cmd: 'at', perm_crossuser: true) do |dat|
+cmd(cmd: 'at') do |dat|
   chan = dat[:split][0]
   if dat[:plug].chans[chan]
     nick = dat[:nick]
@@ -25,10 +25,10 @@ cmd(cmd: 'at', perm_crossuser: true) do |dat|
   else
     dat.nreply 'No such chan!'
   end
-end
+end.perm!('crosschan')
 
 core.help_add('cross', 'on', 'on <server> {message}', 'Processes given message on given server')
-cmd(cmd: 'on', perm_crossuser: true) do |dat|
+cmd(cmd: 'on') do |dat|
   plug = dat[:split][0]
   if bot.plugs[plug] && bot.plugs[plug].running
     message = dat[:split][1..dat[:split].length - 1].join(' ')
@@ -37,4 +37,4 @@ cmd(cmd: 'on', perm_crossuser: true) do |dat|
   else
     dat.nreply 'No such plug!'
   end
-end
+end.perm!('crossplug')
