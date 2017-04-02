@@ -91,7 +91,7 @@ class ProtonBot::Plug
   # @param msg [String]
   # @return [Plug] self
   def ctcp(target, msg)
-    write("PRIVMSG #{target} :\x01#{msg}\x01")
+    write("PRIVMSG #{target} :\x01#{self.class.process_colors(msg)}\x01")
     self
   end
 
@@ -100,7 +100,7 @@ class ProtonBot::Plug
   # @param msg [String]
   # @return [Plug] self
   def nctcp(target, msg)
-    write("NOTICE #{target} :\x01#{msg}\x01")
+    write("NOTICE #{target} :\x01#{self.class.process_colors(msg)}\x01")
     self
   end
 
