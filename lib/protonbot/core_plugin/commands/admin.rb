@@ -59,39 +59,52 @@ cmd(cmd: 'nick') do |dat|
   end
 end.perm!('nick')
 
-core.help_add('admin', 'msg', 'msg [target] <message>', 'Sends given message to target')
+core.help_add('admin', 'msg', 'msg <target> <message>', 'Sends given message to target')
 cmd(cmd: 'msg') do |dat|
   if dat[:split].empty?
     dat.nreply ProtonBot::Messages::NOT_ENOUGH_PARAMETERS
   else
-    dat[:plug].privmsg(dat[:split][0], dat[:split][1, dat[:split].length - 1].join(' '))
+    dat[:plug].privmsg(dat[:split][0], dat[:split][1, dat[:split].length].join(' '))
   end
 end.perm!('msg')
 
-core.help_add('admin', 'ctcp', 'ctcp [target] <message>', 'Sends given ctcp to target')
+core.help_add('admin', 'ctcp', 'ctcp <target> <message>', 'Sends given ctcp to target')
 cmd(cmd: 'ctcp') do |dat|
   if dat[:split].empty?
     dat.nreply ProtonBot::Messages::NOT_ENOUGH_PARAMETERS
   else
-    dat[:plug].ctcp(dat[:split][0], dat[:split][1, dat[:split].length - 1].join(' '))
+    dat[:plug].ctcp(dat[:split][0], dat[:split][1, dat[:split].length].join(' '))
   end
 end.perm!('ctcp')
 
-core.help_add('admin', 'notice', 'notice [target] <message>', 'Sends given notice to target')
+core.help_add('admin', 'action', 'action [target] <message>', 'Sends given ctcp ACTION to target')
+cmd(cmd: 'action') do |dat|
+  if dat[:split].empty?
+    dat.nreply ProtonBot::Messages::NOT_ENOUGH_PARAMETERS
+  else
+    if %w(! + # &).include? dat[:split][0][0]
+      dat[:plug].action(dat[:split][0], dat[:split][1, dat[:split].length].join(' '))
+    else
+      dat[:plug].action(dat[:target], dat[:split][0, dat[:split].length].join(' '))
+    end
+  end
+end.perm!('ctcp')
+
+core.help_add('admin', 'notice', 'notice <target> <message>', 'Sends given notice to target')
 cmd(cmd: 'notice') do |dat|
   if dat[:split].empty?
     dat.nreply ProtonBot::Messages::NOT_ENOUGH_PARAMETERS
   else
-    dat[:plug].notice(dat[:split][0], dat[:split][1, dat[:split].length - 1].join(' '))
+    dat[:plug].notice(dat[:split][0], dat[:split][1, dat[:split].length].join(' '))
   end
 end.perm!('notice')
 
-core.help_add('admin', 'nctcp', 'nctcp [target] <message>', 'Sends given nctcp to target')
+core.help_add('admin', 'nctcp', 'nctcp <target> <message>', 'Sends given nctcp to target')
 cmd(cmd: 'nctcp') do |dat|
   if dat[:split].empty?
     dat.nreply ProtonBot::Messages::NOT_ENOUGH_PARAMETERS
   else
-    dat[:plug].nctcp(dat[:split][0], dat[:split][1, dat[:split].length - 1].join(' '))
+    dat[:plug].nctcp(dat[:split][0], dat[:split][1, dat[:split].length].join(' '))
   end
 end.perm!('nctcp')
 

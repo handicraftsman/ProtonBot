@@ -95,6 +95,15 @@ class ProtonBot::Plug
     self
   end
 
+  # Sends CTCP ACTION to given target
+  # @param target [String]
+  # @param msg [String]
+  # @return [Plug] self
+  def action(target, msg)
+    ctcp(target, "ACTION #{msg}")
+    self
+  end
+
   # Sends NCTCP to given target.
   # @param target [String]
   # @param msg [String]
