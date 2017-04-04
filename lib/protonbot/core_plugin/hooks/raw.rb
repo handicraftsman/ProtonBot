@@ -17,7 +17,7 @@ hook(type: :raw) do |dat|
   elsif m = /^:(.+?)!(.+?)@(.+?) NOTICE (.+?) :(.+)/.match(dat[:raw_data])
     emitt(dat.merge(type: :notice, nick: m[1], user: m[2], host: m[3],
                     target: m[4], message: m[5]))
-  elsif m = /^:(.+?)!(.+?)@(.+?) TOPIC (.+?) :(.+)/.match(dat[:raw_data]) # NYI
+  elsif m = /^:(.+?)!(.+?)@(.+?) TOPIC (.+?) :(.+)/.match(dat[:raw_data])
     emit(dat.merge(type: :utopic, nick: m[1], user: m[2], host: m[3],
                    channel: m[4], topic: m[5]))
   elsif m = /^:(.+?)!(.+?)@(.+?) JOIN :(.+)/.match(dat[:raw_data])

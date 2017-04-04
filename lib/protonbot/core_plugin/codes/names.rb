@@ -1,8 +1,11 @@
 hook(type: :code, code: @numeric::NAMREPLY) do |dat|
   m = /[=*@] (.+?) :(.+)/.match(dat[:extra])
 
-  if !dat[:plug].chans[m[1]] || !dat[:plug].chans[m[1]][:collecting]
+  unless dat[:plug].chans[m[1]]
     dat[:plug].chans[m[1]] = {}
+  end
+
+  unless dat[:plug].chans[m[1]][:collecting]
     dat[:plug].chans[m[1]][:collecting] = true
     dat[:plug].chans[m[1]][:users] = []
   end
