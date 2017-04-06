@@ -25,8 +25,12 @@ end
 core.help_add('owner', 'rb', 'rb {code}', 'Evaluates given ruby code')
 cmd(cmd: 'rb') do |dat|
   if dat[:split]
-    out = eval(dat[:split].join(' ')).inspect
-    dat.reply "%BOutput%N: #{out}"
+    begin
+      out = eval(dat[:split].join(' ')).inspect
+      dat.reply "%BOutput%N: #{out}"
+    rescue StandardError, SyntaxError => e
+      dat.reply "E: #{e.class} => #{e.message}"
+    end
   else
     dat.reply '%BOutput%N: nil'
   end
