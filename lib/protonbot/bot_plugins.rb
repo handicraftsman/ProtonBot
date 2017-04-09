@@ -39,14 +39,22 @@ class ProtonBot::Bot
   # each plugin
   # @return [Bot] self
   def plugins_load
-    @plugins['core'] =
-      pluginr "#{Gem.loaded_specs['protonbot'].lib_dirs_glob.split(':')[0]}/protonbot/core_plugin/plugin.rb"
+    core = pluginr "#{Gem.loaded_specs['protonbot'].lib_dirs_glob.split(':')[0]}/protonbot/core_plugin/plugin.rb"
+    core.bot  = self
+    core.core = core
+    core.launch
+    @core = core
+    @plugins[core.name] = core
+    core.log = @_log.wrap("?#{core.name}")
+    core.log.info("Started plugin `#{core.name} v#{core.version}` successfully!")
     @plugin_loader.call if @plugin_loader
-    @plugins.each do |k, v|
-      v.bot = self
-      v.launch
-      v.log = @_log.wrap("?#{v.name}")
-      v.log.info("Started plugin `#{v.name} v#{v.version}` successfully!")
+    @parr.each do |pl|
+      pl.bot  = self
+      pl.core = @plugins[core.name]
+      pl.launch
+      @plugins[pl.name] = pl
+      pl.log = @_log.wrap("?#{pl.name}")
+      pl.log.info("Started plugin `#{pl.name} v#{pl.version}` successfully!")
     end
     self
   end
@@ -69,7 +77,7 @@ class ProtonBot::Bot
     else
       raise ArgumentError, 'Unknown type of `dat` plugin! Use Array or String!'
     end
-    @plugins[pl.name] = pl
+    @parr << pl
     self
   end
 
@@ -85,7 +93,7 @@ class ProtonBot::Bot
         pl = pluginr(path)
         raise ProtonBot::PluginError, "`#{path}` did not return plugin!" unless
           pl.instance_of? ProtonBot::Plugin
-        @plugins[gemname] = pl
+        @parr << pl
       else
         raise IOError, "No such file or directory: #{path}"
       end

@@ -25,7 +25,7 @@ class ProtonBot::Hook
         when :user_and_target
           :"last_used_#{dat[:plug].name}_#{dat[:target]}_#{dat[:host]}"
         end
-      if dat[:bot].plugins['core'].getpermsr(dat[:plug], dat[:host]).include? 'nocooldown'
+      if dat[:bot].core.getpermsr(dat[:plug], dat[:host]).include? 'nocooldown'
         true
       elsif hook.extra[lu_sign]
         curtime = Time.now.to_i

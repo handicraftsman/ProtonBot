@@ -1,6 +1,6 @@
 # Main bot class. Use it to create the bot
 class ProtonBot::Bot
-  attr_reader :log, :_log, :dbs, :plugins, :conf, :plugs, :plugthrs
+  attr_reader :log, :_log, :dbs, :plugins, :conf, :plugs, :plugthrs, :core
 
   # @yield Main bot's block. You'll use it for configuring bot.
   def initialize(&block)
@@ -15,6 +15,7 @@ class ProtonBot::Bot
     configure
     @log.info('Processed config block')
 
+    @parr = []
     @plugins = {}
     plugins_load
     @log.info('Processed plugins block')

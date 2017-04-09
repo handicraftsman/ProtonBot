@@ -16,11 +16,11 @@
 #   @return [LogWrapper] Log
 # @!attribute [rw] path
 #   @return [String] Path
-# @!attribute [r] core
+# @!attribute [rw] core
 #   @return [Plugin] Core plugin
 class ProtonBot::Plugin
-  attr_reader :name, :version, :description, :plugins, :hooks, :core
-  attr_accessor :bot, :log, :path
+  attr_reader :name, :version, :description, :plugins, :hooks
+  attr_accessor :bot, :log, :path, :core
 
   # @param block [Proc]
   def initialize(&block)
@@ -33,7 +33,6 @@ class ProtonBot::Plugin
   # @return [Plugin] self
   def launch
     @plugins = @bot.plugins
-    @core    = @bot.plugins['core']
     instance_exec(&@block)
     raise ProtonBot::PluginError, 'Plugin-name is not set!' unless
       @name
