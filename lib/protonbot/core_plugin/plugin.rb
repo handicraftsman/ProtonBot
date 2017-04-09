@@ -1,3 +1,5 @@
+require 'yaml'
+
 ProtonBot::Plugin.new do
   @name        = 'Core'
   @version     = ProtonBot::VERSION

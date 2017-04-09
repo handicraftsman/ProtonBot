@@ -11,24 +11,32 @@ fun :help_render do |query = nil, ehash = nil|
           p.hooks.each do |hk|
             next if hook
             next unless hk
-            if hk.pattern[:type] == :command && hk.pattern[:cmd] == h[:name] && hk.extra[:needed_perms]
+            if hk.pattern[:type] == :command && hk.pattern[:cmd] == h[:name]
               hook = hk
             end
           end
         end
-        done = 
-          if hook && ehash && ehash[:perms]
-            perms       = ehash[:perms]
-            needed      = hook.extra[:needed_perms]
-            not_enough  = needed - perms
-            available   = needed - not_enough
-            available_  = available.map{|i|'%C%GREEN' + i + '%N'}
-            not_enough_ = not_enough.map{|i|'%C%RED' + i + '%N'}
-            permstatus  = (available_ + not_enough_).join(' ')
-            "%B#{group}/#{item} |%N #{h[:syntax]} %B|%N Perms: #{permstatus} %B|%N #{h[:description]}"
-          else
-            "%B#{group}/#{item} |%N #{h[:syntax]} %B|%N #{h[:description]}"
-          end
+        done = "%B#{group}/#{item} |%N #{h[:syntax]} %B|%N #{h[:description]}"
+        if hook && ehash && ehash[:perms] && hook.extra[:needed_perms]
+          perms       = ehash[:perms]
+          needed      = hook.extra[:needed_perms]
+          not_enough  = needed - perms
+          available   = needed - not_enough
+          available_  = available.map{|i|'%C%GREEN' + i + '%N'}
+          not_enough_ = not_enough.map{|i|'%C%RED' + i + '%N'}
+          permstatus  = (available_ + not_enough_).join(' ')
+          done << " %B|%N Perms: #{permstatus}"
+        end
+        if hook && ehash && hook.extra[:cooldown_seconds]
+          s = hook.extra[:cooldown_seconds].to_s
+          q =
+            if hook.extra[:cooldown_mode]
+              ''
+            else
+              ' (quiet)'
+            end
+          done << " %B|%N Cooldown: #{s}s#{q}"
+        end
       end
     end
     if done

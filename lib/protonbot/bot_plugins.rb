@@ -44,8 +44,9 @@ class ProtonBot::Bot
     @plugin_loader.call if @plugin_loader
     @plugins.each do |k, v|
       v.bot = self
-      v.log = @_log.wrap("?#{k}")
       v.launch
+      v.log = @_log.wrap("?#{v.name}")
+      v.log.info("Started plugin `#{v.name} v#{v.version}` successfully!")
     end
     self
   end

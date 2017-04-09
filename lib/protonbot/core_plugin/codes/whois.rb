@@ -7,3 +7,4 @@ hook(type: :code, code: @numeric::WHOISUSER) do |dat|
   u[:host] = m[3]
   emit(dat.merge(type: :code_whoisuser, nick: u[:nick], user: u[:user], host: u[:host]))
 end
+

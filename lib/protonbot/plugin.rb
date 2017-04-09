@@ -41,7 +41,6 @@ class ProtonBot::Plugin
       @description
     raise ProtonBot::PluginError, 'Plugin-description is not set!' unless
       @description
-    log.info("Started plugin `#{@name} v#{@version}` successfully!")
   end
 
   # Creates hook and returns it
