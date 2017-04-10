@@ -31,6 +31,7 @@ class ProtonBot::Bot
   # Basically clears plugin hash
   # @return [Bot] self
   def plugins_unload
+    @parr    = []
     @plugins = {}
     self
   end
@@ -101,6 +102,20 @@ class ProtonBot::Bot
       raise ArgumentError, "No such gem: #{gemname}"
     end
     self
+  end
+
+  # Loads plugins by array of strings. If first char of item is period,
+  # then plugin is loaded from gem
+  # @param plugins [Array<String>]
+  # @return [Bot] self
+  def plugin_array(arr)
+    arr.each do |pl|
+      if pl[0] == '.'
+        gem pl[1,pl.length-1]
+      else
+        plugin pl
+      end
+    end
   end
 
   # Loads plugin by path

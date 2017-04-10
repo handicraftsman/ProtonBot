@@ -7,7 +7,7 @@ class ProtonBot::Plug
         s = s[0..-3]
         log.info "R > #{s}"
         begin
-          emit(type: :raw, raw_data: s.clone, plug: self, db: db, bot: bot, core: bot.plugins['core'])
+          emit(type: :raw, raw_data: s.clone, plug: self, db: db, bot: bot)
         rescue => e
           log_err(e)
         end

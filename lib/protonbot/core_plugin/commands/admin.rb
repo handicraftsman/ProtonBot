@@ -124,5 +124,5 @@ hook(type: :command, cmd: 'r') do |dat|
   dat[:bot].plugins_unload
   dat[:bot].plugins_load
   dat[:bot].log.info 'Reload: END'
-  dat.nreply 'Done!'
+  dat.nreply "Done! Loaded %B#{dat[:bot].plugins.length}%N plugins"
 end.perm!('reload')
