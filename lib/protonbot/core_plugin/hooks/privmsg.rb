@@ -19,12 +19,14 @@ hook(type: :privmsg) do |dat|
 
   # CTCP
   if dat[:message][0] == "\x01" && dat[:message][-1] == "\x01"
-    dat[:type] = :ctcp
-    dat[:message] = dat[:message][1..(dat[:message].length - 2)]
-    s = dat[:message].split(' ')
-    dat[:cmd] = s[0]
-    (dat[:split] = s[1, s.length - 1]) || []
-    emit(dat)
+    dat1 = dat.clone
+    dat1[:type] = :ctcp
+    dat1[:message] = dat1[:message][1..(dat1[:message].length - 2)]
+    s = dat1[:message].split(' ')
+    dat1[:cmd] = s[0]
+    (dat1[:split] = s[1, s.length - 1]) || []
+    privmsg_patch(dat1)
+    emit(dat1)
   end
 
   # Command-checker
@@ -52,11 +54,13 @@ hook(type: :notice) do |dat|
 
   # CTCP
   if dat[:message][0] == "\x01" && dat[:message][-1] == "\x01"
-    dat[:type] = :nctcp
-    dat[:message] = dat[:message][1..(dat[:message].length - 2)]
-    s = dat[:message].split(' ')
-    dat[:cmd] = s[0]
-    (dat[:split] = s[1, s.length - 1]) || []
-    emit(dat)
+    dat1 = dat.clone
+    dat1[:type] = :nctcp
+    dat1[:message] = dat1[:message][1..(dat1[:message].length - 2)]
+    s = dat1[:message].split(' ')
+    dat1[:cmd] = s[0]
+    (dat1[:split] = s[1, s.length - 1]) || []
+    privmsg_patch(dat1)
+    emit(dat1)
   end
 end

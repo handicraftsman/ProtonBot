@@ -3,19 +3,20 @@ class ProtonBot::Plug
   # @param dat [Hash] Event hash
   # @return [Plug] self
   def emit(dat = {})
+    hooks = []
     bot.plugins.each do |_, p|
-      worked = []
-      p.hooks.each do |h|
-        next unless dat >= h.pattern && !worked.include?(h.object_id) && worked.empty?
-        canrun = true
-        h.chain.each do |l|
-          next unless canrun
-          canrun = l.call(dat, h)
-        end
-        worked << h.object_id
-        h.block.call(dat) if canrun
+      hooks += p.hooks
+    end
+    hooks = hooks.keep_if do |hook|
+      dat >= hook.pattern
+    end
+    hooks.each do |h|
+      canrun = true
+      h.chain.each do |l|
+        next unless canrun
+        canrun = l.call(dat, h)
       end
-      worked = []
+      h.block.call(dat) if canrun
     end
     event_locks.each_with_index do |el, k|
       if dat >= el.pattern

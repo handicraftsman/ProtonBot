@@ -31,10 +31,12 @@ hook(type: :upart) do |dat|
 
   if dat[:nick] == dat[:plug].nick && /requested by .*/.match(dat[:message])
     dat[:plug].join(dat[:channel])
+  elsif dat[:nick] == dat[:plug].nick
+    dat[:plug].chans.delete(dat[:channel])
   end
 end
 
-hook(type: :uqit) do |dat|
+hook(type: :uquit) do |dat|
   dat[:plug].chans.each do |chan|
     chan[:users].delete(dat[:nick]) if chan[:users]
   end
