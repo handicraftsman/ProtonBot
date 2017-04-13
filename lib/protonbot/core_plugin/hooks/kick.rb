@@ -13,5 +13,8 @@ hook(type: :ukick) do |dat|
   dat[:plug].chans[dat[:channel]][:users].delete dat[:target] if
     dat[:plug].chans[dat[:channel]][:users].include? dat[:target]
 
-  dat[:plug].join(dat[:channel]) if dat[:target] == dat[:plug].nick
+  if dat[:target] == dat[:plug].nick
+    dat[:plug].chans.delete dat[:channel]
+    dat[:plug].join(dat[:channel])
+  end
 end
