@@ -1,6 +1,6 @@
 # Main bot class. Use it to create the bot
 class ProtonBot::Bot
-  attr_reader :log, :_log, :dbs, :plugins, :conf, :plugs, :plugthrs, :core
+  attr_reader :log, :_log, :dbs, :plugins, :conf, :plugs, :plugthrs, :core, :db_cross
 
   # @yield Main bot's block. You'll use it for configuring bot.
   def initialize(&block)
@@ -15,6 +15,9 @@ class ProtonBot::Bot
     configure
     @log.info('Processed config block')
 
+    Dir.mkdir('dbs/') unless File.exist?(File.expand_path('./dbs/'))
+    @db_cross = Heliodor::DB.new("dbs/pb-cross.db", true)
+
     @parr = []
     @plugins = {}
     plugins_load
@@ -23,7 +26,6 @@ class ProtonBot::Bot
     @dbs = {}
     @plugs = {}
     @plugthrs = {}
-    Dir.mkdir('dbs/') unless File.exist?(File.expand_path('./dbs/'))
     @conf['servers'].each do |k_, v_|
       k = k_.clone
       v = v_.clone
