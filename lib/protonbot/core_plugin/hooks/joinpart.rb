@@ -37,8 +37,11 @@ hook(type: :upart) do |dat|
 end
 
 hook(type: :uquit) do |dat|
-  dat[:plug].chans.each do |chan|
-    chan[:users].delete(dat[:nick]) if chan[:users]
+  dat[:plug].chans.each do |k, chan|
+    if chan[:users] and chan[:users].include? dat[:nick]
+      emit(dat.merge(type: :uquitc, channel: k))
+      chan[:users].delete(dat[:nick])
+    end
   end
   dat[:plug].users.delete(dat[:nick])
 end

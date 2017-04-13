@@ -20,16 +20,17 @@ hook(type: :raw) do |dat|
   elsif m = /^:(.+?)!(.+?)@(.+?) TOPIC (.+?) :(.+)/.match(dat[:raw_data])
     emit(dat.merge(type: :utopic, nick: m[1], user: m[2], host: m[3],
                    channel: m[4], topic: m[5]))
-  elsif m = /^:(.+?)!(.+?)@(.+?) JOIN :(.+)/.match(dat[:raw_data])
+  elsif m = /^:(.+?)!(.+?)@(.+?) JOIN (.+)/.match(dat[:raw_data])
     emit(dat.merge(type: :ujoin, nick: m[1], user: m[2], host: m[3], channel: m[4]))
   elsif m = /^:(.+?)!(.+?)@(.+?) PART (.+) :(.*)/.match(dat[:raw_data])
     emit(dat.merge(type: :upart, nick: m[1], user: m[2], host: m[3], channel: m[4], message: m[5]))
-  elsif m = /^:(.+?)!(.+?)@(.+?) QUIT :.*/.match(dat[:raw_data])
-    emit(dat.merge(type: :uquit, nick: m[1], user: m[2], host: m[3]))
+  elsif m = /^:(.+?)!(.+?)@(.+?) QUIT :(.*)/.match(dat[:raw_data])
+    emit(dat.merge(type: :uquit, nick: m[1], user: m[2], host: m[3], reason: m[4]))
   elsif m = /^:(.+?)!(.+?)@(.+?) NICK :(.+)/.match(dat[:raw_data])
     emit(dat.merge(type: :unick, nick: m[1], user: m[2], host: m[3], to: m[4]))
-  elsif m = /^:(.+?)!(.+?)@(.+?) KICK (.+?) (.+?) :.*/.match(dat[:raw_data])
-    emit(dat.merge(type: :ukick, nick: m[1], user: m[2], host: m[3], channel: m[4], target: m[5]))
+  elsif m = /^:(.+?)!(.+?)@(.+?) KICK (.+?) (.+?) :(.*)/.match(dat[:raw_data])
+    emit(dat.merge(type: :ukick, nick: m[1], user: m[2], host: m[3], channel: m[4], target: m[5],
+      reason: m[6]))
   elsif m = /^:.+? CAP \* ACK :(.+)/.match(dat[:raw_data])
     caps = m[1].split(' ')
     caps.each do |c|
